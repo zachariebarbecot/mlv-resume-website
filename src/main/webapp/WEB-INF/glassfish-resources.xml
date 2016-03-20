@@ -7,7 +7,7 @@
         <property name="databaseName" value="d5gs1qp0jgb234"/>
         <property name="User" value="ysubjtkzutvlrz"/>
         <property name="Password" value="iW0e7-5KijyvmI_M3f2OlOWHMz"/>
-        <property name="URL" value="jdbc:postgresql://ysubjtkzutvlrz:iW0e7-5KijyvmI_M3f2OlOWHMz@ec2-54-228-246-42.eu-west-1.compute.amazonaws.com:5432/d5gs1qp0jgb234"/>
+        <property name="URL" value="jdbc:postgresql://ec2-54-228-246-42.eu-west-1.compute.amazonaws.com:5432/d5gs1qp0jgb234"/>
         <property name="driverClass" value="org.postgresql.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/jdbc/rw" object-type="user" pool-name="post-gre-sql_rw_postgresPool"/>
