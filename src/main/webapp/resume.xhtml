@@ -1,0 +1,296 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:view locale="#{language.locale}">
+        <h:head>
+            <title>#{site['resume']} - #{resume.profil.prfFname} #{resume.profil.prfLname}</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="icon" type="image/png" href="#{resource['img/favicon.png']}" />
+            <h:outputStylesheet library="bootstrap" name="css/bootstrap.css" />
+            <h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
+            <h:outputStylesheet library="css" name="responsive.css" />
+            <h:outputStylesheet library="css" name="style_resume.css" />
+            <h:outputScript library="js" name="jquery-1.11.1.min.js" />
+            <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
+            <h:outputScript library="js" name="jquery.nicescroll.min.js" />
+            <h:outputScript library="js" name="evenfly.js" />
+        </h:head>
+        <f:metadata>
+            <f:viewParam name="usrId" value="#{resume.usrId}"/>
+            <f:viewAction action="#{resume.display}" />
+        </f:metadata>
+        <h:body>
+            <div class="top-left-menu">
+                <h:link class="fa fa-home fa-4x link" outcome="toIndex"/>
+                <c:if test="#{login.loggedIn}">
+                    <br/>
+                    <h:link class="fa fa-edit fa-4x link" outcome="toEdit" />
+                </c:if>
+            </div>
+            <c:choose>
+                <c:when test="#{resume.user ne null}">
+                    <div class="container">
+                        <c:if test="#{(resume.profil ne null) or (not empty resume.profil)}">
+                            <div id="header" class="row">
+                                <div class="col-sm-2">
+                                    <h:graphicImage class="propic" library="img" name="photo.png" />
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="cv-title">
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h1>#{resume.profil.prfFname} #{resume.profil.prfLname}</h1>
+                                            </div>
+                                            <div class="col-sm-5 text-right dl-share">
+                                                <!-- AddToAny BEGIN -->
+                                                <a class="a2a_dd btn btn-default" href=""><span class="fa fa-share "></span> #{site['share']}</a>
+                                                <script type="text/javascript">
+                                                    var a2a_config = a2a_config || {};
+                                                    a2a_config.linkname = "#{site['resume']} - #{resume.profil.prfFname} #{resume.profil.prfLname}";
+                                                        a2a_config.linkurl = "#{request.requestURL}?usrId=#{resume.usrId}";
+                                                            a2a_config.onclick = 1;
+                                                            a2a_config.num_services = 8;
+                                                            a2a_config.prioritize = ["facebook", "twitter", "google_plus", "linkedin", "email", "google_gmail", "outlook_com", "print"];
+                                                </script>
+                                                <script src="https://static.addtoany.com/menu/page.js"></script>
+                                                <!-- AddToAny END -->
+                                                <a class="btn btn-success" href=""><span class="fa fa-download"></span> #{site['download']}</a>
+                                            </div>
+                                        </div>
+                                        <h2>#{resume.profil.prfJob}</h2>
+                                    </div><!-- Title end-->
+
+                                    <!-- ===========================
+                                    SOCIAL & CONTACT
+                                    ============================ -->
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <span class="social fa fa-home"></span>#{resume.profil.prfAddress}<br/>#{resume.profil.prfZip} #{resume.profil.prfCity}
+                                                </li>
+                                                <li>
+                                                    <a href="tel:#{resume.profil.prfTel}"><span class="social fa fa-skype"></span>#{resume.profil.prfTel}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="mailto:#{resume.profil.prfEmail}"><span class="social fa fa-envelope-o"></span>#{resume.profil.prfEmail}</a>
+                                                </li>
+                                            </ul>
+                                        </div><!-- social 1st col end-->
+
+                                        <div class="col-sm-4">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    #{site['born']} <h:outputText id="date" value="#{resume.profil.prfBirthday}">
+                                                        <f:convertDateTime type="date" dateStyle="short" />
+                                                    </h:outputText> - #{resume.age} #{site['age']}
+                                                </li>
+                                                <li>
+                                                    <a href="#{resume.profil.prfLink}"><span class="social fa fa-globe"></span>#{resume.profil.prfLink}</a>
+                                                </li>
+                                            </ul>
+                                        </div><!-- social 2nd col end-->
+
+                                        <div class="col-sm-4">
+                                            <ul class="list-unstyled">
+                                                <c:choose>
+                                                    <c:when test="#{empty resume.profil.prfFacebook}">
+                                                        <li class="disabled">
+                                                            <del><a class="not-active" href="#"><span class="social fa fa-facebook"></span>Facebook</a></del>
+                                                        </li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li>
+                                                            <a href="https://www.facebook.com/#{resume.profil.prfFacebook}"><span class="social fa fa-facebook"></span>Facebook</a>
+                                                        </li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:choose>
+                                                    <c:when test="#{empty resume.profil.prfTwitter}">
+                                                        <li class="disabled">
+                                                            <del><a class="not-active" href="#"><span class="social fa fa-twitter"></span>Twitter</a></del>
+                                                        </li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li>
+                                                            <a href="https://twitter.com/#{resume.profil.prfTwitter}"><span class="social fa fa-twitter"></span>Twitter</a>
+                                                        </li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:choose>
+                                                    <c:when test="#{empty resume.profil.prfLinkedin}">
+                                                        <li class="disabled">
+                                                            <del><a class="not-active" href="#"><span class="social fa fa-linkedin"></span>LinkedIn</a></del>
+                                                        </li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li>
+                                                            <a href="https://www.linkedin.com/in/#{resume.profil.prfLinkedin}"><span class="social fa fa-linkedin"></span>LinkedIn</a>
+                                                        </li>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </ul>
+                                        </div><!-- social 3nd col end-->
+                                    </div><!-- header social end-->
+                                </div><!-- header right end-->
+                            </div><!-- header end-->
+                            <c:if test="#{resume.user.usrDisplayPrf ge 1}">
+                                <hr class="firsthr" />
+                            </c:if>
+                        </c:if>
+                        <div class="col-md-12">
+                            <c:if test="#{(resume.education ne null) or (not empty resume.education)}">
+                                <div id="education" class="row mobmid">
+                                    <div class="col-sm-1">
+                                        <span class="secicon fa fa-graduation-cap"></span>
+                                    </div><!--icon end-->
+                                    <div class="col-sm-11">
+                                        <h3>#{site['education']}</h3>
+                                        <c:forEach var="edu" items="#{resume.education}">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <h4>#{edu.eduFormation}</h4>
+                                                    <p class="sub">#{edu.eduPlace}</p>
+                                                    <p>#{edu.eduContent}</p>
+                                                </div>
+                                                <div class="year col-md-3">
+                                                    <p>
+                                                        <h:outputText value="#{edu.eduStart}" >
+                                                            <f:convertDateTime pattern="MM/yyyy" />
+                                                        </h:outputText>
+                                                        - 
+                                                        <h:outputText value="#{edu.eduEnd}" >
+                                                            <f:convertDateTime pattern="MM/yyyy" />
+                                                        </h:outputText>
+                                                    </p>
+                                                </div>
+                                            </div><!--Education & Certification end-->
+                                            <c:if test="#{resume.education.get(resume.education.size() - 1) ne edu}">
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+                                </div><!--Education & Certifications end-->
+                                <c:if test="#{resume.user.usrDisplayEdu ge 1}">
+                                    <hr />
+                                </c:if>
+                            </c:if>
+                            <c:if test="#{(resume.employment ne null) or (not empty resume.employment)}">
+                                <div id="job" class="row mobmid">
+                                    <div class="col-sm-1">
+                                        <span class="secicon fa fa-briefcase"></span>
+                                    </div><!--icon end-->
+                                    <div class="col-sm-11">
+                                        <h3>#{site['employment']}</h3>
+                                        <c:forEach var="emp" items="#{resume.employment}">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <h4>#{emp.empJob}</h4>
+                                                    <p class="sub">#{emp.empPlace}</p>
+                                                    <p>#{emp.empContent}</p>
+                                                </div>
+                                                <div class="year col-md-3">
+                                                    <p>
+                                                        <h:outputText value="#{emp.empStart}" >
+                                                            <f:convertDateTime pattern="MM/yyyy" />
+                                                        </h:outputText>
+                                                        - 
+                                                        <h:outputText value="#{emp.empEnd}" >
+                                                            <f:convertDateTime pattern="MM/yyyy" />
+                                                        </h:outputText>
+                                                    </p>
+                                                </div>
+                                            </div><!--Job end-->
+                                            <c:if test="#{resume.employment.get(resume.employment.size() - 1) ne emp}">
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                    </div><!--Job experiences end-->
+                                </div><!--Job experiences end-->
+                                <c:if test="#{resume.user.usrDisplayEmp ge 1}">
+                                    <hr />
+                                </c:if>
+                            </c:if>
+                            <c:if test="#{(resume.coreskill ne null) or (not empty resume.coreskill)}">
+                                <div id="coreskill" class="row mobmid">
+                                    <div class="col-sm-1">
+                                        <span class="secicon fa fa-list"></span>
+                                    </div><!--icon end-->
+                                    <div class="col-sm-11">
+                                        <h3>#{site['coreskill']}</h3>
+                                        <c:forEach var="crs" items="#{resume.coreskill}">
+                                            <div class="col-md-4">
+                                                <h4>#{crs.crsName}</h4>
+                                                <c:choose>
+                                                    <c:when test="#{crs.crsLevel ge 4}">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="#{crs.crsLevel}" aria-valuemin="0" aria-valuemax="5" style="min-width: #{crs.crsLevel*20}%">
+                                                            </div>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="#{crs.crsLevel eq 3}">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="#{crs.crsLevel}" aria-valuemin="0" aria-valuemax="5" style="min-width: #{crs.crsLevel*20}%">
+                                                            </div>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="#{crs.crsLevel eq 2}">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="#{crs.crsLevel}" aria-valuemin="0" aria-valuemax="5" style="min-width: #{crs.crsLevel*20}%">
+                                                            </div>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="#{crs.crsLevel}" aria-valuemin="0" aria-valuemax="5" style="min-width: #{crs.crsLevel*20}%">
+                                                            </div>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </c:forEach>
+                                    </div><!-- Core skill end-->
+                                </div><!-- Core Skill end-->
+                                <c:if test="#{resume.user.usrDisplayCrs ge 1}">
+                                    <hr />
+                                </c:if>
+                            </c:if>
+                            <c:if test="#{(resume.interests ne null) or (not empty resume.interests)}">
+                                <div id="interests" class="row mobmid">
+                                    <div class="col-sm-1">
+                                        <span class="secicon fa fa-star"></span>
+                                    </div><!--icon end-->
+                                    <div class="col-sm-11">
+                                        <h3>#{site['interests']}</h3>
+                                        <c:forEach var="itr" items="#{resume.interests}">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4>#{itr.itrName}</h4>
+                                                    <p>
+                                                        #{itr.itrContent}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <c:if test="#{resume.interests.get(resume.interests.size() - 1) ne itr}">
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                    </div><!-- Interests end-->
+                                </div><!-- Interests end-->
+
+                            </c:if>
+                        </div>
+                    </div><!--container end-->
+                </c:when>
+                <c:otherwise>
+                    No Resume
+                </c:otherwise>
+            </c:choose>
+        </h:body>
+    </f:view>
+</html>
+

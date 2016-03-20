@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="../WEB-INF/template/layout.xhtml">
+            <ui:define name="top">
+                <div class="form-top-left">
+                    <h3>#{site['profil']}</h3>
+                </div>
+                <div class="form-top-right">
+                    <i class="fa fa-user"></i>
+                </div>
+            </ui:define>
+            <ui:define name="bottom">
+                <ul class="list-group revised">
+                    <li class="list-group-item">
+                        #: #{user.user.usrId}
+                    </li>
+                    <li class="list-group-item">
+                        Email: #{user.user.usrEmail}<br/>
+                        <a data-toggle="collapse" href="#settings" aria-expanded="false" aria-controls="settings">
+                            #{site['modify.settings']}<span class="caret" />
+                        </a>
+                        <div class="collapse" id="settings">
+                            <h:form class="login-form">
+                                <div class="form-group">
+                                    <h:outputLabel class="sr-only" for="email" value="Email" />
+                                    <h:inputText class="form-username form-control" id="email" value="#{settings.email}" p:placeholder="Email..." />
+                                </div>
+                                <h:commandButton class="btn btn-block" action="#{settings.changeEmail}" value="#{site['reset.email']}" />
+                            </h:form>
+                            <hr/>
+                            <h:form class="login-form">
+                                <div class="form-group">
+                                    <h:outputLabel class="sr-only" for="password" value="Password" />
+                                    <h:inputSecret class="form-password form-control" id="password" value="#{settings.password}" p:placeholder="Password..." />
+                                </div>
+                                <h:commandButton class="btn btn-block" action="#{settings.changePassword}" value="#{site['reset.password']}" />
+                            </h:form>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        #{site['created']}: <h:outputText value="#{user.user.usrCreated}"><f:convertDateTime pattern="dd/MM/yyyy HH:mm" /></h:outputText>
+                    </li>
+                    <c:if test="#{user.user.usrUpdated ne null}">
+                        <li class="list-group-item">
+                            #{site['updated']}: <h:outputText value="#{user.user.usrUpdated}"><f:convertDateTime pattern="dd/MM/yyyy HH:mm" /></h:outputText>
+                        </li>
+                    </c:if>
+                    <li class="list-group-item">
+                        #{site['group']}: #{user.user.grpId.grpName}
+                    </li>
+                    <c:if test="#{request.isUserInRole('Candidate')}">
+                        <li class="list-group-item">
+                            #{site['view']}: #{user.user.usrView}
+                        </li>
+                    </c:if>
+                    <h:form>
+                        <li class="list-group-item">
+                            <h:commandLink action="#{logout.doLogout}" value="#{site['logout']}" /> 
+                        </li>
+                    </h:form>
+                </ul>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

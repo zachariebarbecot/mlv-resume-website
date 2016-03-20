@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <f:view locale="#{language.locale}">
+        <h:head>
+            <title>
+                Resume Website <c:if test="#{login.loggedIn}"><h:outputText value="- #{login.user.usrEmail}" /></c:if>
+            </title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="icon" type="image/png" href="#{resource['img/favicon.png']}" />
+            <h:outputStylesheet library="bootstrap" name="css/bootstrap.css" />
+            <h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
+            <h:outputStylesheet library="css" name="form-elements.css" />
+            <h:outputStylesheet library="css" name="style.css" />
+            <h:outputStylesheet library="css" name="bootstrap-notify.css" />
+            <h:outputScript library="js" name="jquery-1.11.1.min.js" />
+            <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
+            <h:outputScript library="js" name="bootstrap-notify.js" />
+            <h:outputScript library="js" name="jquery.backstretch.min.js" />
+            <h:outputScript>var background = "#{resource['img/background.jpg']}";</h:outputScript>
+            <h:outputScript library="js" name="scripts.js" />
+        </h:head>
+        <h:body>
+            <div class='notifications top-right'></div>
+            <c:if test="#{facesContext.maximumSeverity eq 'WARN 1'}" >
+                <script>
+                    $('.top-right').notify({
+                        type: 'danger',
+                        message: {text: '#{facesContext.messageList.toArray()[0].detail}'}
+                    }).show();
+                </script>
+            </c:if>
+            <c:if test="#{facesContext.maximumSeverity eq 'INFO 0'}" >
+                <script>
+                    $('.top-right').notify({
+                        type: 'success',
+                        message: {text: '#{facesContext.messageList.toArray()[0].detail}'}
+                    }).show();
+                </script>
+            </c:if>
+            <div class="top-content">
+                <div class="inner-bg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2 text">
+                                <h1><h:link class="white" outcome="toIndex" value="Resume Website"/></h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3 form-box">
+                                <div class="form-top">
+                                    <ui:insert name="top">
+                                        Top
+                                    </ui:insert>
+                                </div>
+                                <div class="form-bottom">
+                                    <ui:insert name="bottom">
+                                        Bottom
+                                    </ui:insert>
+                                    <div class="row">
+                                        <h:form>
+                                            <div class="form-group text-center">
+                                                <h:commandButton action="#{language.setLanguage('en')}"
+                                                                 value="#{site['english']}" image="#{resource['img/flag_en.png']}" />
+                                                <h:outputText class="text-primary" value=" • " />
+                                                <h:commandButton action="#{language.setLanguage('fr')}"
+                                                                 value="#{site['french']}" image="#{resource['img/flag_fr.png']}" />
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>
+

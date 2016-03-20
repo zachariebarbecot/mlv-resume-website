@@ -1,0 +1,454 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="#{language.locale}">
+        <h:head>
+            <title>
+                #{site['edit.resume']} <c:if test="#{login.loggedIn}"><h:outputText value="- #{login.user.usrEmail}" /></c:if>
+            </title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="icon" type="image/png" href="#{resource['img/favicon.png']}" />
+            <h:outputStylesheet library="bootstrap" name="css/bootstrap.css" />
+            <h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
+            <h:outputStylesheet library="css" name="style_edit.css" />
+            <h:outputStylesheet library="css" name="bootstrap-notify.css" />
+            <h:outputScript library="js" name="jquery-1.11.1.min.js" />
+            <h:outputScript library="bootstrap" name="js/bootstrap.min.js" />
+            <h:outputScript library="js" name="bootstrap-notify.js" />
+        </h:head>
+        <h:body>
+            <div class='notifications top-right'></div>
+            <c:if test="#{facesContext.maximumSeverity eq 'WARN 1'}" >
+                <script>
+                    $('.top-right').notify({
+                        type: 'danger',
+                        message: {text: '#{facesContext.messageList.toArray()[0].detail}'}
+                    }).show();
+                </script>
+            </c:if>
+            <c:if test="#{facesContext.maximumSeverity eq 'INFO 0'}" >
+                <script>
+                    $('.top-right').notify({
+                        type: 'success',
+                        message: {text: '#{facesContext.messageList.toArray()[0].detail}'}
+                    }).show();
+                </script>
+            </c:if>
+            <div class="top-left-menu">
+                <h:link class="fa fa-home fa-4x link" outcome="toIndex"/>
+                <br/>
+                <h:link class="fa fa-list-alt fa-4x link" outcome="toResume">
+                    <f:param name="usrId" value="#{user.user.usrId}" />
+                </h:link>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="board">
+                        <div class="board-inner">
+                            <ul class="nav nav-tabs" id="myTab">
+                                <div class="liner"></div>
+                                <li class="active">
+                                    <a href="#profil" data-toggle="tab" title="#{site['profil']}">
+                                        <span class="round-tabs one">
+                                            <i class="fa fa-user"></i>
+                                        </span> 
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#education" data-toggle="tab" title="#{site['education']}">
+                                        <span class="round-tabs two">
+                                            <i class="fa fa-graduation-cap"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#employment" data-toggle="tab" title="#{site['employment']}">
+                                        <span class="round-tabs three">
+                                            <i class="fa fa-briefcase"></i>
+                                        </span> 
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#coreskill" data-toggle="tab" title="#{site['coreskill']}">
+                                        <span class="round-tabs four">
+                                            <i class="fa fa-list"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#interests" data-toggle="tab" title="#{site['interests']}">
+                                        <span class="round-tabs five">
+                                            <i class="fa fa-star"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="profil">
+                                <h3 class="head text-center">#{site['profil']}</h3>
+                                <h:form>
+                                    <div class="col-sm-4 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="lname" value="Last Name" />
+                                            <h:inputText class="form-control" id="lname" p:placeholder="Last Name..." value="#{edition.profil.prfLname}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="fname" value="First Name" />
+                                            <h:inputText class="form-control" id="fname" p:placeholder="First Name..." value="#{edition.profil.prfFname}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="email" value="Email" />
+                                            <h:inputText class="form-control" id="email" p:placeholder="Email..." value="#{edition.profil.prfEmail}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="job" value="Job" />
+                                            <h:inputText class="form-control" id="job" p:placeholder="Job..." value="#{edition.profil.prfJob}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="birthday" value="Birthday" />
+                                            <h:inputText class="form-control" id="birthday" p:placeholder="Birthday..." value="#{edition.profil.prfBirthday}">  
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>  
+                                            </h:inputText>
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="address" value="Address" />
+                                            <h:inputText class="form-control" id="address" p:placeholder="Address..." value="#{edition.profil.prfAddress}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="zip" value="Zip" />
+                                            <h:inputText class="form-control" id="zip" p:placeholder="Zip..." value="#{edition.profil.prfZip}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="city" value="City" />
+                                            <h:inputText class="form-control" id="city" p:placeholder="City..." value="#{edition.profil.prfCity}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="tel" value="Tel" />
+                                            <h:inputText class="form-control" id="tel" p:placeholder="Tel..." value="#{edition.profil.prfTel}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="link" value="Link" />
+                                            <h:inputText class="form-control" id="link" p:placeholder="Link..." value="#{edition.profil.prfLink}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="facebook" value="Facebook" />
+                                            <h:inputText class="form-control" id="facebook" p:placeholder="Facebook..." value="#{edition.profil.prfFacebook}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="twitter" value="Twitter" />
+                                            <h:inputText class="form-control" id="twitter" p:placeholder="Twitter..." value="#{edition.profil.prfTwitter}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="linkedin" value="LinkedIn" />
+                                            <h:inputText class="form-control" id="linkedin" p:placeholder="LinkedIn..." value="#{edition.profil.prfLinkedin}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="viewPrf" value="Visible" />
+                                            <h:selectOneMenu id="viewPrf" value="#{edition.displayPrf}">
+                                                <f:selectItem itemValue="0" itemLabel="Hide" />
+                                                <f:selectItem itemValue="1" itemLabel="All users" />
+                                                <f:selectItem itemValue="2" itemLabel="Only registered users" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.changeProfil}" value="#{site['modify']}" />
+                                    </div>
+                                </h:form>
+                            </div>
+                            <div class="tab-pane fade" id="education">
+                                <h3 class="head text-center">#{site['education']}</h3>
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <c:forEach var="edu" items="#{edition.education}">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="formation" value="Formation" /> - 
+                                                <h:commandLink action="#{edition.deleteEducation}" value="#{site['delete']}">
+                                                    <f:setPropertyActionListener target="#{edition.delEdu}" value="#{edu}" />
+                                                </h:commandLink>
+                                                <h:inputText class="form-control" id="formation" p:placeholder="Formation..." value="#{edu.eduFormation}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="place" value="Place" />
+                                                <h:inputText class="form-control" id="place" p:placeholder="Place..." value="#{edu.eduPlace}" />
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <h:outputLabel class="control-label" for="start" value="Start" />
+                                                    <h:inputText class="form-control" id="start" p:placeholder="Start..." value="#{edu.eduStart}">  
+                                                        <f:convertDateTime pattern="MM/yyyy"/>  
+                                                    </h:inputText>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 col-sm-offset-2">
+                                                <div class="form-group ">
+                                                    <h:outputLabel class="control-label" for="end" value="End" />
+                                                    <h:inputText class="form-control" id="end" p:placeholder="End..." value="#{edu.eduEnd}">  
+                                                        <f:convertDateTime pattern="MM/yyyy"/>  
+                                                    </h:inputText>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="content" value="Content" />
+                                                <h:inputTextarea class="form-control" id="content" p:placeholder="Content..." value="#{edu.eduContent}" />
+                                            </div>
+                                            <c:if test="#{edition.education.get(edition.education.size() - 1) ne edu}">
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="viewEdu" value="Visible" />
+                                            <h:selectOneMenu id="viewEdu" value="#{edition.displayEdu}">
+                                                <f:selectItem itemValue="0" itemLabel="Hide" />
+                                                <f:selectItem itemValue="1" itemLabel="All users" />
+                                                <f:selectItem itemValue="2" itemLabel="Only registered users" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.changeEducation}" value="#{site['modify']}" />
+                                    </div>
+                                </h:form>
+                                <div class="clearfix" />
+                                <hr />
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="formation" value="Formation" />
+                                            <h:inputText class="form-control" id="formation" p:placeholder="Formation..." value="#{edition.newEdu.eduFormation}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="place" value="Place" />
+                                            <h:inputText class="form-control" id="place" p:placeholder="Place..." value="#{edition.newEdu.eduPlace}" />
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="start" value="Start" />
+                                                <h:inputText class="form-control" id="start" p:placeholder="Start..." value="#{edition.newEdu.eduStart}">  
+                                                    <f:convertDateTime pattern="MM/yyyy"/>  
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 col-sm-offset-2">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="end" value="End" />
+                                                <h:inputText class="form-control" id="end" p:placeholder="End..." value="#{edition.newEdu.eduEnd}">  
+                                                    <f:convertDateTime pattern="MM/yyyy"/>  
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="content" value="Content" />
+                                            <h:inputTextarea class="form-control" id="content" p:placeholder="Content..." value="#{edition.newEdu.eduContent}" />
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.addEducation}" value="#{site['add']}" />
+                                    </div>            
+                                </h:form>
+                            </div>
+                            <div class="tab-pane fade" id="employment">
+                                <h3 class="head text-center">#{site['employment']}</h3>
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <c:forEach var="emp" items="#{edition.employment}">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="job" value="Job" /> - 
+                                                <h:commandLink action="#{edition.deleteEmployment}" value="#{site['delete']}">
+                                                    <f:setPropertyActionListener target="#{edition.delEmp}" value="#{emp}" />
+                                                </h:commandLink>
+                                                <h:inputText class="form-control" id="job" p:placeholder="Job..." value="#{emp.empJob}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="place" value="Place" />
+                                                <h:inputText class="form-control" id="place" p:placeholder="Place..." value="#{emp.empPlace}" />
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <h:outputLabel class="control-label" for="start" value="Start" />
+                                                    <h:inputText class="form-control" id="start" p:placeholder="Start..." value="#{emp.empStart}">  
+                                                        <f:convertDateTime pattern="MM/yyyy"/>  
+                                                    </h:inputText>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 col-sm-offset-2">
+                                                <div class="form-group ">
+                                                    <h:outputLabel class="control-label" for="end" value="End" />
+                                                    <h:inputText class="form-control" id="end" p:placeholder="End..." value="#{emp.empEnd}">  
+                                                        <f:convertDateTime pattern="MM/yyyy"/>  
+                                                    </h:inputText>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="content" value="Content" />
+                                                <h:inputTextarea class="form-control" id="content" p:placeholder="Content..." value="#{emp.empContent}" />
+                                            </div>
+                                            <c:if test="#{edition.employment.get(edition.employment.size() - 1) ne emp}">
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="viewEmp" value="Visible" />
+                                            <h:selectOneMenu id="viewEmp" value="#{edition.displayEmp}">
+                                                <f:selectItem itemValue="0" itemLabel="Hide" />
+                                                <f:selectItem itemValue="1" itemLabel="All users" />
+                                                <f:selectItem itemValue="2" itemLabel="Only registered users" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.changeEmployment}" value="#{site['modify']}" />
+                                    </div>
+                                </h:form>
+                                <div class="clearfix" />
+                                <hr />
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="job" value="Job" />
+                                            <h:inputText class="form-control" id="job" p:placeholder="Job..." value="#{edition.newEmp.empJob}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="place" value="Place" />
+                                            <h:inputText class="form-control" id="place" p:placeholder="Place..." value="#{edition.newEmp.empPlace}" />
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="start" value="Start" />
+                                                <h:inputText class="form-control" id="start" p:placeholder="Start..." value="#{edition.newEmp.empStart}">  
+                                                    <f:convertDateTime pattern="MM/yyyy"/>  
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 col-sm-offset-2">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="end" value="End" />
+                                                <h:inputText class="form-control" id="end" p:placeholder="End..." value="#{edition.newEmp.empEnd}">  
+                                                    <f:convertDateTime pattern="MM/yyyy"/>  
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="content" value="Content" />
+                                            <h:inputTextarea class="form-control" id="content" p:placeholder="Content..." value="#{edition.newEmp.empContent}" />
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.addEmployment}" value="#{site['add']}" />
+                                    </div>            
+                                </h:form>
+                            </div>
+                            <div class="tab-pane fade" id="coreskill">
+                                <h3 class="head text-center">#{site['coreskill']}</h3>
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <c:forEach var="crs" items="#{edition.coreskill}">
+                                            <div class="form-group col-sm-5">
+                                                <h:outputLabel class="control-label" for="name" value="Name" /> - 
+                                                <h:commandLink action="#{edition.deleteCoreskill}" value="#{site['delete']}">
+                                                    <f:setPropertyActionListener target="#{edition.delCrs}" value="#{crs}" />
+                                                </h:commandLink>
+                                                <h:inputText class="form-control" id="name" p:placeholder="Name..." value="#{crs.crsName}" />
+                                            </div>
+                                            <div class="col-sm-5 col-sm-offset-1">
+                                                <div class="form-group">
+                                                    <h:outputLabel class="control-label" for="level" value="Level (0-5)" />
+                                                    <h:inputText class="form-control" id="level" p:placeholder="Level..." value="#{crs.crsLevel}" />
+                                                </div>
+                                            </div>
+                                            <c:if test="#{edition.coreskill.get(edition.coreskill.size() - 1) ne crs}">
+                                                <div class="clearfix" />
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                        <div class="clearfix" />
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="viewCrs" value="Visible" />
+                                            <h:selectOneMenu id="viewCrs" value="#{edition.displayCrs}">
+                                                <f:selectItem itemValue="0" itemLabel="Hide" />
+                                                <f:selectItem itemValue="1" itemLabel="All users" />
+                                                <f:selectItem itemValue="2" itemLabel="Only registered users" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.changeCoreskill}" value="#{site['modify']}" />
+                                    </div>
+                                </h:form>
+                                <div class="clearfix" />
+                                <hr />
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <div class="form-group col-sm-5">
+                                            <h:outputLabel class="control-label" for="name" value="Name" />
+                                            <h:inputText class="form-control" id="name" p:placeholder="Name..." value="#{edition.newCrs.crsName}" />
+                                        </div>
+                                        <div class="col-sm-5 col-sm-offset-1">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="level" value="Level (0-5)" />
+                                                <h:inputText class="form-control" id="level" p:placeholder="Level..." value="#{edition.newCrs.crsLevel}" />
+                                            </div>
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.addCoreskill}" value="#{site['add']}" />
+                                    </div>            
+                                </h:form>
+                            </div>
+                            <div class="tab-pane fade" id="interests">
+                                <div class="text-center">
+                                    <i class="img-intro icon-checkmark-circle"></i>
+                                </div>
+                                <h3 class="head text-center">#{site['interests']}</h3>
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <c:forEach var="itr" items="#{edition.interests}">
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="name" value="Name" /> - 
+                                                <h:commandLink action="#{edition.deleteInterests}" value="#{site['delete']}">
+                                                    <f:setPropertyActionListener target="#{edition.delItr}" value="#{itr}" />
+                                                </h:commandLink>
+                                                <h:inputText class="form-control" id="name" p:placeholder="Name..." value="#{itr.itrName}" />
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel class="control-label" for="content" value="Content" />
+                                                <h:inputTextarea class="form-control" id="content" p:placeholder="Content..." value="#{itr.itrContent}" />
+                                            </div>
+                                            <c:if test="#{edition.interests.get(edition.interests.size() - 1) ne itr}">
+                                                <div class="clearfix" />
+                                                <hr />
+                                            </c:if>
+                                        </c:forEach>
+                                        <div class="clearfix" />
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="viewItr" value="Visible" />
+                                            <h:selectOneMenu id="viewItr" value="#{edition.displayItr}">
+                                                <f:selectItem itemValue="0" itemLabel="Hide" />
+                                                <f:selectItem itemValue="1" itemLabel="All users" />
+                                                <f:selectItem itemValue="2" itemLabel="Only registered users" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.changeInterests}" value="#{site['modify']}" />
+                                    </div>
+                                </h:form>
+                                <div class="clearfix" />
+                                <hr />
+                                <h:form class="form-horizontal">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="name" value="Name" />
+                                            <h:inputText class="form-control" id="name" p:placeholder="Name..." value="#{edition.newItr.itrName}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <h:outputLabel class="control-label" for="content" value="Content" />
+                                            <h:inputTextarea class="form-control" id="content" p:placeholder="Content..." value="#{edition.newItr.itrContent}" />
+                                        </div>
+                                        <h:commandButton class="btn btn-success btn-outline-rounded green" action="#{edition.addInterests}" value="#{site['add']}" />
+                                    </div>            
+                                </h:form>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>
+

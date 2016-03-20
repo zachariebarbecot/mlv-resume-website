@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <c:if test="#{login.loggedIn}">
+            <script>
+                document.location.href = "#{request.contextPath}/index.xhtml";
+            </script>
+        </c:if>
+        <ui:composition template="./WEB-INF/template/layout.xhtml">
+            <ui:define name="top">
+                <c:if test="#{not login.loggedIn}">
+                    <div class="form-top-left">
+                        <h3>#{site['signup']}</h3>
+                        <p>#{site['enter.signup.email.password']}</p>
+                    </div>
+                    <div class="form-top-right">
+                        <i class="fa fa-lock"></i>
+                    </div>
+                </c:if>
+            </ui:define>
+            <ui:define name="bottom">
+                <c:if test="#{not login.loggedIn}">
+                    <h:form class="login-form">
+                        <div class="form-group">
+                            <h:outputLabel class="sr-only" for="email" value="Email" />
+                            <h:inputText class="form-username form-control" id="email" p:placeholder="Email..." value="#{register.user.usrEmail}">
+                                <f:ajax event="blur" render="EmailMessage" />
+                            </h:inputText>
+                            <span id="helpBlock" class="help-block">
+                                <h:message id="EmailMessage" for="email" errorClass="text-danger" />
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel class="sr-only" for="password" value="Password" />
+                            <h:inputSecret class="form-password form-control" id="password" p:placeholder="Password..." value="#{register.user.usrPassword}" binding="#{confirmPassword}">
+                                <f:ajax event="blur" execute="password passwordc" render="PasswordMessage" />
+                            </h:inputSecret>
+                            <span id="helpBlock" class="help-block">
+                                <h:message id="PasswordMessage" for="password" errorClass="text-danger" />
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel class="sr-only" for="passwordc" value="Confirm Password" />
+                            <h:inputSecret class="form-password form-control" id="passwordc" p:placeholder="Confirm Password..." value="#{register.user.usrPassword}">
+                                <f:validator validatorId="passwordValidator" />
+                                <f:attribute name="confirmPassword" value="#{confirmPassword}" />
+                                <f:ajax event="blur" execute="password passwordc" render="PasswordMessage PasswordcMessage" />
+                            </h:inputSecret>
+                            <span id="helpBlock" class="help-block">
+                                <h:message id="PasswordcMessage" for="passwordc" errorClass="text-danger" />
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <h:selectOneRadio value="#{register.grpId}">
+                                <f:selectItem itemValue="2" itemLabel="#{site['candidate']}" />
+                                <f:selectItem itemValue="3" itemLabel="#{site['employer']}" />
+                            </h:selectOneRadio>
+                        </div>
+                        <h:commandButton class="btn btn-block" action="#{register.doSignUp}" value="#{site['signup']}" />
+                    </h:form>
+                </c:if>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

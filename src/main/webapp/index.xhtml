@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="./WEB-INF/template/layout.xhtml">
+            <ui:define name="top">
+                <c:choose>
+                    <c:when test="#{not login.loggedIn}">
+                        <div class="form-top-left">
+                            <h3>#{site['login']}</h3>
+                            <p>#{site['enter.email.password']}</p>
+                        </div>
+                        <div class="form-top-right">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="form-top-left">
+                            <h3>Menu</h3>
+                            <p>#{site['hello']} #{user.user.usrEmail}</p>
+                        </div>
+                        <div class="form-top-right">
+                            <i class="fa fa-align-justify"></i>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </ui:define>
+            <ui:define name="bottom">
+                <c:choose>
+                    <c:when test="#{not login.loggedIn}">
+                        <h:form class="login-form">
+                            <div class="form-group">
+                                <h:outputLabel class="sr-only" for="j_username" value="Email" />
+                                <h:inputText class="form-username form-control" id="j_username" p:placeholder="Email..." value="#{login.email}" />
+                            </div>
+                            <div class="form-group">
+                                <h:outputLabel class="sr-only" for="j_password" value="Password" />
+                                <h:inputSecret class="form-password form-control" id="j_password" p:placeholder="Password..." value="#{login.password}" />
+                            </div>
+                            <h:commandButton class="btn btn-block" action="#{login.doLogin}" value="#{site['login']}" />
+                            <div class="form-group text-center">
+                                <h:link class="" outcome="toSignUp" value="#{site['signup']}" />
+                            </div>
+                        </h:form>
+                    </c:when>
+                    <c:otherwise>
+                        <ul class="list-group revised">
+                            <c:if test="#{request.isUserInRole('Administrator')}">
+                                <li class="list-group-item">
+                                    Administrator
+                                </li>
+                            </c:if>
+                            <c:if test="#{request.isUserInRole('Employer')}">
+                                <li class="list-group-item">
+                                    Employer
+                                </li>
+                            </c:if>
+                            <c:if test="#{request.isUserInRole('Candidate')}">
+                                <li class="list-group-item">
+                                    <h:link outcome="toResume" value="#{site['my.resume']}">
+                                        <f:param name="usrId" value="#{user.user.usrId}" />
+                                    </h:link> 
+                                </li>
+                                <li class="list-group-item">
+                                    <h:link outcome="toEdit" value="#{site['edit.resume']}" />
+                                </li>
+                            </c:if>
+                            <h:form>
+                                <li class="list-group-item">
+                                    <h:commandLink action="#{user.displayProfil}" value="#{site['profil']}" /> 
+                                </li>
+                                <li class="list-group-item">
+                                    <h:commandLink action="#{logout.doLogout}" value="#{site['logout']}" /> 
+                                </li>
+                            </h:form>
+                        </ul>
+                    </c:otherwise>
+                </c:choose>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
